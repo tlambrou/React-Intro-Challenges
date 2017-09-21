@@ -128,7 +128,7 @@
     constructor(props) {
       super(props)
       this.state = {
-        count: 10,
+        count: props.count,
         isRunning: true
       }
       this.timerId = setInterval(() => this.tick(), 1000)
@@ -139,7 +139,6 @@
     }
 
     tick() {
-
       if (this.state.isRunning == true) {
         this.setState({count: this.state.count - 1})
         if (this.state.count == 0) {
@@ -147,7 +146,6 @@
           this.setState({isRunning: false})
         }
       }
-
     }
 
     render() {
@@ -159,7 +157,52 @@
     }
   }
 
+  const Button = (props) => {
+    return (
+      <button onClick={props.onClick}>{props.text}</button>
+    );
+  }
 
+  class Stopwatch extends React.Component {
+
+    constructor(props) {
+      super(props)
+      this.state = {
+        count: 0,
+        isRunning: true
+      }
+      this.timerId = setInterval(() => this.tick(), 1000)
+    }
+
+    componentWillUnmount() {
+      clearInterval(this.timerId)
+    }
+
+    tick() {
+      if (this.state.isRunning == true) {
+        this.setState({ count: this.state.count + 1 })
+      }
+    }
+
+    toggle() {
+      this.setState({ isRunning: !this.state.isRunning })
+      console.log(this.state.isRunning)
+    }
+
+    render() {
+      const count = this.state.count;
+      const displayTime = `${count}`;
+      const label = this.state.isRunning ? "Stop" : "Start"
+      return (
+        <div>
+          <Title className="subtitle" title={displayTime} />
+          <Button text={label} onClick={() => {
+            this.toggle()
+          }} />
+        </div>
+      );
+    }
+  }
 
 
 
@@ -189,7 +232,7 @@
 
   // These things will be displayed in the list.
   const things = ["A", "B", "C"];
-
+  const count = 10
 
 
 
@@ -209,7 +252,9 @@
     <Title title="React Clock" />
     <Clock />
     <Subtitle className="subtitle" subtitle="Coundown Timer" />
-    <Countdown />
+    <Countdown count={count} />
+    <Title title="Stopwatch" />
+    <Stopwatch />
     <List items={things} />
     </div>,
     document.getElementById('app')
