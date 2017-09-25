@@ -40,6 +40,11 @@
     font-weight: bold;
   }
 
+  .counter-box {
+    display: flex;
+    flex-direction: column;
+  }
+
 
 
   </style>
@@ -252,7 +257,7 @@
   const users = [{name: "Tassos", team: "Voltron", id: "2908"}, {name: "Mitchell", team: "Voltron", id: "3841"}, {name: "Corey", team: "Butthead", id: "666"},]
 
   const ListItem = (props) => {
-   return <li><Title title={props.title} /> <br /> <Stopwatch /> </li>
+    return <li><Title title={props.title} /> <br /> <Stopwatch /> </li>
   }
 
   class Listy extends React.Component {
@@ -278,10 +283,10 @@
 
       return (
         <div>
-          <Button text="Add" onClick={ () => { this.addItem() } } />
-          <ul>
-            { items }
-          </ul>
+        <Button text="Add" onClick={ () => { this.addItem() } } />
+        <ul>
+        { items }
+        </ul>
         </div>
       );
     }
@@ -290,7 +295,33 @@
 
   const itemArr = [{title: "First Stopwatch"}, {title: "Another Stopwatch"}]
 
+  class Counter extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = {
+          count: 0
+      }
+    }
 
+    upTick() {
+      this.setState({count: this.state['count'] + 1})
+    }
+
+    downTick() {
+      this.setState({count: this.state['count'] - 1})
+    }
+
+    render() {
+      return (
+        <div className="counter-box">
+            <Subtitle subtitle="Counter Component" />
+            <Button text="+" onClick={ () => { this.upTick() }} />
+            <Title title={ this.state.count } />
+            <Button text="-" onClick={ () => { this.downTick() }} />
+        </div>
+      )
+    }
+  }
 
   // --------------------------------
   // Renders reacts virtual DOM.
@@ -302,6 +333,7 @@
 
   ReactDOM.render(
     <div>
+    <Counter />
     <p>Hi Tassos</p>
     <Title title="React Clock" />
     <Clock />
