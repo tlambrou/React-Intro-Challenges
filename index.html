@@ -14,19 +14,33 @@
   }
 
   h1 {
-    text-align: center;
   }
 
   .subtitle {
-    font-weight: lighter;
+    font-weight: normal;
     color: purple;
     position: relative;
     width: 100%;
     display: block;
     margin: auto;
-    text-align: center;
-
   }
+
+  .center {
+    text-align: center;
+  }
+
+  button {
+    position: relative;
+    width: 60px;
+    height: 36px;
+  }
+
+  .red {
+    color: red;
+    font-weight: bold;
+  }
+
+
 
   </style>
 </head>
@@ -151,8 +165,9 @@
     render() {
       const count = this.state.count;
       const displayTime = `${count}`;
+      const classes = this.state.count > 5 ? "subtitle" : "subtitle red"
       return (
-        <Subtitle className="subtitle" subtitle={displayTime} />
+        <Subtitle className={classes} subtitle={displayTime} />
       );
     }
   }
@@ -195,10 +210,10 @@
       const label = this.state.isRunning ? "Stop" : "Start"
       return (
         <div>
-          <Title className="subtitle" title={displayTime} />
-          <Button text={label} onClick={() => {
-            this.toggle()
-          }} />
+        <Title className="subtitle" title={displayTime} />
+        <Button text={label} onClick={() => {
+          this.toggle()
+        }} />
         </div>
       );
     }
@@ -218,8 +233,8 @@
 
   const List = (props) => {
     const items = props.items.map((item, index) => {
-      return <li key={index}>{item}</li>;
-    });
+      return <li key={item.id}><Title title={item.name} /> <br /> <Subtitle className="subtitle" subtitle={item.team} /> <br /> <Stopwatch /> </li>
+    })
 
     return (
       <ul>
@@ -234,7 +249,49 @@
   const things = ["A", "B", "C"];
   const count = 10
 
+  const users = [{name: "Tassos", team: "Voltron", id: "2908"}, {name: "Mitchell", team: "Voltron", id: "3841"}, {name: "Corey", team: "Butthead", id: "666"},]
 
+  const ListItem = (props) => {
+   return <li><Title title={props.title} /> <br /> <Stopwatch /> </li>
+  }
+
+  class Listy extends ReactDOM {
+    constructor (props) {
+      super(props)
+      this.state = {
+        arr: [ { title: "Sample SW" }, { title: "Another Sample SW" } ]
+      }
+    }
+
+    addItem() {
+      const newItem = { title: "New Stopwatch" }
+      const newArr = this.state['arr'].push(newItem)
+      this.setState({ arr: newArr })
+
+    }
+
+    displayItems() {
+      var output = ""
+      for (var i = 0; i < this.state['arr'].length; i++) {
+        output += <ListItem title={this.state.['arr'][i].title} />
+      }
+      return output
+    }
+
+    render() {
+      const items = displayItems()
+
+      return (
+        <Button text="Add" onClick={ () => { this.addItem() } } />
+        <ul>
+          { items }
+        </ul>
+      );
+    }
+
+  }
+
+  const itemArr = []
 
 
 
@@ -255,7 +312,7 @@
     <Countdown count={count} />
     <Title title="Stopwatch" />
     <Stopwatch />
-    <List items={things} />
+    <Listy items={itemArr} />
     </div>,
     document.getElementById('app')
   );
