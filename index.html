@@ -255,43 +255,40 @@
    return <li><Title title={props.title} /> <br /> <Stopwatch /> </li>
   }
 
-  class Listy extends ReactDOM {
+  class Listy extends React.Component {
     constructor (props) {
       super(props)
       this.state = {
-        arr: [ { title: "Sample SW" }, { title: "Another Sample SW" } ]
+        arr: this.props['arr']
       }
     }
 
     addItem() {
       const newItem = { title: "New Stopwatch" }
-      const newArr = this.state['arr'].push(newItem)
+      var newArr = this.state['arr']
+      newArr.push(newItem)
+      console.log("Here is the newArr", newArr)
       this.setState({ arr: newArr })
-
-    }
-
-    displayItems() {
-      var output = ""
-      for (var i = 0; i < this.state['arr'].length; i++) {
-        output += <ListItem title={this.state.['arr'][i].title} />
-      }
-      return output
     }
 
     render() {
-      const items = displayItems()
+      const items = this.state['arr'].map((item, index) => {
+        return <ListItem title={item['title']} key={index} />
+      })
 
       return (
-        <Button text="Add" onClick={ () => { this.addItem() } } />
-        <ul>
-          { items }
-        </ul>
+        <div>
+          <Button text="Add" onClick={ () => { this.addItem() } } />
+          <ul>
+            { items }
+          </ul>
+        </div>
       );
     }
 
   }
 
-  const itemArr = []
+  const itemArr = [{title: "First Stopwatch"}, {title: "Another Stopwatch"}]
 
 
 
@@ -312,7 +309,7 @@
     <Countdown count={count} />
     <Title title="Stopwatch" />
     <Stopwatch />
-    <Listy items={itemArr} />
+    <Listy arr={itemArr} />
     </div>,
     document.getElementById('app')
   );
